@@ -128,7 +128,9 @@ function verifyTypeScriptSetup() {
       parsedValue: ts.JsxEmit.React,
       suggested: 'react',
     },
-    paths: { value: undefined, reason: 'aliased imports are not supported' },
+    // @infinitusai/react-scripts start
+    // paths: { value: undefined, reason: 'aliased imports are not supported' },
+    // @infinitusai/react-scripts end
   };
 
   const formatDiagnosticHost = {
@@ -256,7 +258,9 @@ function verifyTypeScriptSetup() {
   if (!fs.existsSync(paths.appTypeDeclarations)) {
     fs.writeFileSync(
       paths.appTypeDeclarations,
-      `/// <reference types="react-scripts" />${os.EOL}`
+      // @infinitusai/react-scripts start
+      `/// <reference types="@infinitusai/react-scripts" />${os.EOL}`
+      // @infinitusai/react-scripts end
     );
   }
 }

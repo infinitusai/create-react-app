@@ -264,7 +264,9 @@ inquirer
           content
             // Remove react-scripts types
             .replace(
-              /^\s*\/\/\/\s*<reference\s+types.+?"react-scripts".*\/>.*(?:\n|$)/gm,
+              // @infinitusai/react-scripts start
+              /^\s*\/\/\/\s*<reference\s+types.+?"@infinitusai\/react-scripts".*\/>.*(?:\n|$)/gm,
+              // @infinitusai/react-scripts end
               ''
             )
             .trim() + os.EOL;

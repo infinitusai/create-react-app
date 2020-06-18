@@ -78,11 +78,17 @@ function getWebpackAliases(options = {}) {
 
   const baseUrlResolved = path.resolve(paths.appPath, baseUrl);
 
+  // @infinitusai/react-scripts start
+  const aliases = {
+    shared: paths.sharedPath,
+    proto: paths.protoPath,
+  };
   if (path.relative(paths.appPath, baseUrlResolved) === '') {
-    return {
-      src: paths.appSrc,
-    };
+    aliases.src = paths.appSrc;
   }
+
+  return aliases;
+  // @infinitusai/react-scripts end
 }
 
 /**
@@ -99,11 +105,17 @@ function getJestAliases(options = {}) {
 
   const baseUrlResolved = path.resolve(paths.appPath, baseUrl);
 
+  // @infinitusai/react-scripts start
+  const aliases = {
+    '^shared/(.*)$': '<rootDir>/../shared/$1',
+    '^proto/(.*)$': '<rootDir>/../proto/$1',
+  };
   if (path.relative(paths.appPath, baseUrlResolved) === '') {
-    return {
-      '^src/(.*)$': '<rootDir>/src/$1',
-    };
+    aliases['^src/(.*)$'] = '<rootDir>/src/$1';
   }
+
+  return aliases;
+  // @infinitusai/react-scripts end
 }
 
 function getModules() {

@@ -302,6 +302,12 @@ module.exports = function(webpackEnv) {
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
+        // @infinitusai/react-scripts start
+        // This is a fix for this whyDidYouRender issue: https://github.com/welldone-software/why-did-you-render/issues/85
+        'react-redux': isEnvDevelopment
+          ? 'react-redux/dist/react-redux.js'
+          : 'react-redux/lib',
+        // @infinitusai/react-scripts end
         // Allows for better profiling with ReactDevTools
         ...(isEnvProductionProfile && {
           'react-dom$': 'react-dom/profiling',
@@ -318,7 +324,12 @@ module.exports = function(webpackEnv) {
         // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
         // please link the files into your node_modules/ and let module-resolution kick in.
         // Make sure your source files are compiled, as they will not be processed in any way.
-        new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
+        // @infinitusai/react-scripts start
+        new ModuleScopePlugin(
+          [paths.appSrc, paths.sharedPath, paths.protoPath],
+          [paths.appPackageJson]
+        ),
+        // @infinitusai/react-scripts end
       ],
     },
     resolveLoader: {
@@ -381,7 +392,9 @@ module.exports = function(webpackEnv) {
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
             {
               test: /\.(js|mjs|jsx|ts|tsx)$/,
-              include: paths.appSrc,
+              // @infinitusai/react-scripts start
+              include: [paths.appSrc, paths.sharedPath],
+              // @infinitusai/react-scripts end
               loader: require.resolve('babel-loader'),
               options: {
                 customize: require.resolve(
@@ -404,7 +417,10 @@ module.exports = function(webpackEnv) {
                     'babel-plugin-named-asset-import',
                     'babel-preset-react-app',
                     'react-dev-utils',
-                    'react-scripts',
+                    // @infinitusai/react-scripts start
+                    'babel-plugin-import',
+                    '@infinitusai/react-scripts',
+                    // @infinitusai/react-scripts end
                   ]
                 ),
                 // @remove-on-eject-end
@@ -420,6 +436,30 @@ module.exports = function(webpackEnv) {
                       },
                     },
                   ],
+                  // @infinitusai/react-scripts start
+                  [
+                    require.resolve('babel-plugin-import'),
+                    {
+                      libraryName: '@material-ui/core',
+                      // Use "'libraryDirectory': ''," if your bundler does not support ES modules
+                      // 'libraryDirectory': '',
+                      libraryDirectory: 'esm',
+                      camel2DashComponentName: false,
+                      // "customName": require('path').resolve(__dirname, './.babelrc.mui-core-customName.js')
+                    },
+                    'core',
+                  ],
+                  [
+                    require.resolve('babel-plugin-import'),
+                    {
+                      libraryName: '@material-ui/icons',
+                      // Use "'libraryDirectory': ''," if your bundler does not support ES modules
+                      libraryDirectory: 'esm',
+                      camel2DashComponentName: false,
+                    },
+                    'icons',
+                  ],
+                  // @infinitusai/react-scripts end
                 ],
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
                 // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -458,7 +498,10 @@ module.exports = function(webpackEnv) {
                     'babel-plugin-named-asset-import',
                     'babel-preset-react-app',
                     'react-dev-utils',
-                    'react-scripts',
+                    // @infinitusai/react-scripts start
+                    'babel-plugin-import',
+                    '@infinitusai/react-scripts',
+                    // @infinitusai/react-scripts end
                   ]
                 ),
                 // @remove-on-eject-end

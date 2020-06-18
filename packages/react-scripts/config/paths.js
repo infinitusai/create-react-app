@@ -60,6 +60,10 @@ const resolveModule = (resolveFn, filePath) => {
 module.exports = {
   dotenv: resolveApp('.env'),
   appPath: resolveApp('.'),
+  // @infinitusai/react-scripts start
+  sharedPath: resolveApp('../shared'),
+  protoPath: resolveApp('../proto'),
+  // @infinitusai/react-scripts end
   appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
   appHtml: resolveApp('public/index.html'),
@@ -82,6 +86,10 @@ const resolveOwn = relativePath => path.resolve(__dirname, '..', relativePath);
 module.exports = {
   dotenv: resolveApp('.env'),
   appPath: resolveApp('.'),
+  // @infinitusai/react-scripts start
+  sharedPath: resolveApp('../shared'),
+  protoPath: resolveApp('../proto'),
+  // @infinitusai/react-scripts end
   appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
   appHtml: resolveApp('public/index.html'),
@@ -117,6 +125,10 @@ if (
   module.exports = {
     dotenv: resolveOwn(`${templatePath}/.env`),
     appPath: resolveApp('.'),
+    // @infinitusai/react-scripts start
+    sharedPath: resolveApp('../shared'),
+    protoPath: resolveApp('../proto'),
+    // @infinitusai/react-scripts end
     appBuild: resolveOwn('../../build'),
     appPublic: resolveOwn(`${templatePath}/public`),
     appHtml: resolveOwn(`${templatePath}/public/index.html`),
